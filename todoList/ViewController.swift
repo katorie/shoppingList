@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var todoList = [TodoController]()
+    var todoList = [TodoItem]()
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -19,7 +19,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let userDefaults = UserDefaults.standard
         if let storedTodoList = userDefaults.object(forKey: "todoList") as? Data {
-            if let unarchiveTodoList = NSKeyedUnarchiver.unarchiveObject(with: storedTodoList) as? [TodoController] {
+            if let unarchiveTodoList = NSKeyedUnarchiver.unarchiveObject(with: storedTodoList) as? [TodoItem] {
                 todoList.append(contentsOf: unarchiveTodoList)
             }
         }
@@ -35,8 +35,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             if let textField = alertController.textFields?.first {
-                let todo = TodoController()
-                todo.todoTitle = textField.text!
+                let todo = TodoItem()
+                todo.title = textField.text!
                 self.todoList.insert(todo, at:0)
                 
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
@@ -62,9 +62,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         let todo = todoList[indexPath.row]
-        cell.textLabel?.text = todo.todoTitle
+        cell.textLabel?.text = todo.title
         
-        if todo.todoDone {
+        if todo.isDone {
             cell.accessoryType = UITableViewCellAccessoryType.checkmark
         } else {
             cell.accessoryType = UITableViewCellAccessoryType.none
@@ -76,10 +76,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let todo = todoList[indexPath.row]
         
-        if todo.todoDone {
-            todo.todoDone = false
+        if todo.isDone {
+            todo.isDone = false
         } else {
-            todo.todoDone = true
+            todo.isDone = true
         }
         
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
