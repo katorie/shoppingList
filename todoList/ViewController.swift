@@ -38,7 +38,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 let todo = TodoItem()
                 todo.title = textField.text!
                 self.todoList.insert(todo, at:0)
-                
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
                 
                 let userDefaults = UserDefaults.standard
@@ -63,6 +62,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         let todo = todoList[indexPath.row]
         cell.textLabel?.text = todo.title
+        
+        if todo.isDeleted {
+            cell.textLabel?.textColor = UIColor.red
+        }
         
         if todo.isDone {
             cell.accessoryType = UITableViewCellAccessoryType.checkmark
@@ -93,8 +96,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
-            todoList.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            let todo = todoList[indexPath.row]
+            todo.isDeleted = true
+            
+//            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
             let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoList)
             let userDefaults = UserDefaults.standard
             

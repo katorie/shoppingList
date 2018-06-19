@@ -11,6 +11,7 @@ import Foundation
 class TodoItem: NSObject, NSCoding {
     var title: String?
     var isDone: Bool = false
+    var isDeleted: Bool = false
     
     override init() {
     }
@@ -18,10 +19,12 @@ class TodoItem: NSObject, NSCoding {
     required init?(coder aDecoder: NSCoder) {
         title = aDecoder.decodeObject(forKey: "title") as? String
         isDone = aDecoder.decodeBool(forKey: "isDone")
+        isDeleted = aDecoder.decodeBool(forKey: "isDeleted")
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(title, forKey: "title")
         aCoder.encode(isDone, forKey: "isDone")
+        aCoder.encode(isDone, forKey: "isDeleted")
     }
 }
