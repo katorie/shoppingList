@@ -17,12 +17,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let userDefaults = UserDefaults.standard
-        if let storedTodoList = userDefaults.object(forKey: "todoList") as? Data {
-            if let unarchiveTodoList = NSKeyedUnarchiver.unarchiveObject(with: storedTodoList) as? [TodoItem] {
-                todoList.append(contentsOf: unarchiveTodoList)
-            }
-        }
+        // TODO todoListを読み込む
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,10 +35,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.todoList.insert(todo, at:0)
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
                 
-                let userDefaults = UserDefaults.standard
-                let data = NSKeyedArchiver.archivedData(withRootObject: self.todoList)
-                userDefaults.set(data, forKey: "todoList")
-                userDefaults.synchronize()
+                // TODO todoListを保存する
             }
         }
         alertController.addAction(okAction)
@@ -87,11 +79,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         
-        let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoList)
-        let userDefaults = UserDefaults.standard
-        
-        userDefaults.set(data, forKey: "todoList")
-        userDefaults.synchronize()
+        // TODO 保存する
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -99,12 +87,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let todo = todoList[indexPath.row]
             todo.isDeleted = true
             
+            // TODO todoListからtodoを削除
+            // TODO todoをtodoDoneListに追加
 //            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-            let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoList)
-            let userDefaults = UserDefaults.standard
-            
-            userDefaults.set(data, forKey: "todoList")
-            userDefaults.synchronize()
         }
     }
 
