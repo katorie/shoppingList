@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var todoList = [TodoItem]()
+    var todoDoneList = [TodoItem]()
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -86,10 +87,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if editingStyle == UITableViewCellEditingStyle.delete {
             let todo = todoList[indexPath.row]
             todo.isDeleted = true
+            todoDoneList.insert(todo, at: 0)
+            todoList.remove(at: indexPath.row)
             
-            // TODO todoListからtodoを削除
-            // TODO todoをtodoDoneListに追加
-//            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            // TODO 保存する
+            
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
     }
 
