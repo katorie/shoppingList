@@ -13,6 +13,7 @@
 		414379DA20D101E5008B750B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 414379D920D101E5008B750B /* Assets.xcassets */; };
 		414379DD20D101E5008B750B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 414379DB20D101E5008B750B /* LaunchScreen.storyboard */; };
 		41A39DB520D385B6002187AC /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A39DB420D385B6002187AC /* TodoItem.swift */; };
+		41C2C2B120E0812D00B6CEAF /* DeletedTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41C2C2B020E0812D00B6CEAF /* DeletedTodoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		414379DC20D101E5008B750B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		414379DE20D101E5008B750B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41A39DB420D385B6002187AC /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
+		41C2C2B020E0812D00B6CEAF /* DeletedTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedTodoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				41A39DB420D385B6002187AC /* TodoItem.swift */,
 				414379D420D101E4008B750B /* ViewController.swift */,
 				414379D620D101E4008B750B /* Main.storyboard */,
+				41C2C2B020E0812D00B6CEAF /* DeletedTodoViewController.swift */,
 				414379D920D101E5008B750B /* Assets.xcassets */,
 				414379DB20D101E5008B750B /* LaunchScreen.storyboard */,
 				414379DE20D101E5008B750B /* Info.plist */,
@@ -140,6 +143,7 @@
 			files = (
 				41A39DB520D385B6002187AC /* TodoItem.swift in Sources */,
 				414379D520D101E4008B750B /* ViewController.swift in Sources */,
+				41C2C2B120E0812D00B6CEAF /* DeletedTodoViewController.swift in Sources */,
 				414379D320D101E4008B750B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

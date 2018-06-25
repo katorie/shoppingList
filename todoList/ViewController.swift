@@ -11,18 +11,14 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var todoList = [TodoItem]()
+    var deletedTodoList = [TodoItem]()
     
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let userDefaults = UserDefaults.standard
-        if let storedTodoList = userDefaults.object(forKey: "todoList") as? Data {
-            if let unarchiveTodoList = NSKeyedUnarchiver.unarchiveObject(with: storedTodoList) as? [TodoItem] {
-                todoList.append(contentsOf: unarchiveTodoList)
-            }
-        }
+        // TODO todoListを読み込む
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,10 +36,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 self.todoList.insert(todo, at:0)
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
                 
-                let userDefaults = UserDefaults.standard
-                let data = NSKeyedArchiver.archivedData(withRootObject: self.todoList)
-                userDefaults.set(data, forKey: "todoList")
-                userDefaults.synchronize()
+                // TODO todoListを保存する
             }
         }
         alertController.addAction(okAction)
@@ -54,6 +47,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         present(alertController,animated: true, completion: nil)
     }
     
+    @IBAction func deletedItemsButtonTapped(_ sender: Any) {
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return todoList.count
     }
@@ -62,10 +58,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         let todo = todoList[indexPath.row]
         cell.textLabel?.text = todo.title
-        
-        if todo.isDeleted {
-            cell.textLabel?.textColor = UIColor.red
-        }
         
         if todo.isDone {
             cell.accessoryType = UITableViewCellAccessoryType.checkmark
@@ -87,26 +79,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         
-        let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoList)
-        let userDefaults = UserDefaults.standard
-        
-        userDefaults.set(data, forKey: "todoList")
-        userDefaults.synchronize()
+        // TODO 保存する
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             let todo = todoList[indexPath.row]
             todo.isDeleted = true
+            deletedTodoList.insert(todo, at: 0)
+            todoList.remove(at: indexPath.row)
             
-//            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-            let data: Data = NSKeyedArchiver.archivedData(withRootObject: todoList)
-            let userDefaults = UserDefaults.standard
+            // TODO 保存する
             
-            userDefaults.set(data, forKey: "todoList")
-            userDefaults.synchronize()
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let viewController = segue.destination as! DeletedTodoViewController
+        viewController.deletedTodoList = self.deletedTodoList
+        
+        // TODO アンラップ？
+//        if let storedDeletedTodoList = deletedTodoList {
+//            viewController.deletedTodoList = storedDeletedTodoList
+//        }
+    }
 }
 
