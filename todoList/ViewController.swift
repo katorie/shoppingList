@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var todoList = [TodoItem]()
-    var todoDoneList = [TodoItem]()
+    var deletedTodoList = [TodoItem]()
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -47,6 +47,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         present(alertController,animated: true, completion: nil)
     }
     
+    @IBAction func deletedItemsButtonTapped(_ sender: Any) {
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return todoList.count
     }
@@ -55,10 +58,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         let todo = todoList[indexPath.row]
         cell.textLabel?.text = todo.title
-        
-        if todo.isDeleted {
-            cell.textLabel?.textColor = UIColor.red
-        }
         
         if todo.isDone {
             cell.accessoryType = UITableViewCellAccessoryType.checkmark
@@ -87,7 +86,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if editingStyle == UITableViewCellEditingStyle.delete {
             let todo = todoList[indexPath.row]
             todo.isDeleted = true
-            todoDoneList.insert(todo, at: 0)
+            deletedTodoList.insert(todo, at: 0)
             todoList.remove(at: indexPath.row)
             
             // TODO 保存する
@@ -96,5 +95,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let viewController = segue.destination as! DeletedTodoViewController
+        viewController.deletedTodoList = self.deletedTodoList
+        
+        // TODO アンラップ？
+//        if let storedDeletedTodoList = deletedTodoList {
+//            viewController.deletedTodoList = storedDeletedTodoList
+//        }
+    }
 }
 
