@@ -31,11 +31,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             if let textField = alertController.textFields?.first {
-                let todo = TodoItem()
-                todo.title = textField.text!
-                self.todoList.insert(todo, at:0)
-                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
-                
+                if let text = textField.text, !text.isEmpty {
+                    let todo = TodoItem()
+                    todo.title = text
+                    self.todoList.insert(todo, at:0)
+                    self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
+                }
                 // TODO todoListを保存する
             }
         }
@@ -98,11 +99,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let viewController = segue.destination as! DeletedTodoViewController
         viewController.deletedTodoList = self.deletedTodoList
-        
-        // TODO アンラップ？
-//        if let storedDeletedTodoList = deletedTodoList {
-//            viewController.deletedTodoList = storedDeletedTodoList
-//        }
     }
 }
 
