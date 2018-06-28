@@ -14,7 +14,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var deletedTodoList = [TodoItem]()
     
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var addTodoTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,7 +25,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
+    @IBAction func todoItemAdded(_ sender: UITextField) {
+        if let text = addTodoTextField.text, !text.isEmpty {
+            let todo = TodoItem()
+            todo.title = text
+            self.todoList.insert(todo, at: 0)
+            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
+            // TODO 保存する
+        }
+        
+        addTodoTextField.text = nil
+    }
+    
     @IBAction func addButtonTapped(_ sender: Any) {
         let alertController = UIAlertController(title: "追加", message: "入力してください", preferredStyle: UIAlertControllerStyle.alert)
         alertController.addTextField(configurationHandler: nil)

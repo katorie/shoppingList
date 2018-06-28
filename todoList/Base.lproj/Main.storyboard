@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KoG-7h-2Gi">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="127.5" width="375" height="539.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="todoCell" textLabel="7PP-nS-tYA" style="IBUITableViewCellStyleDefault" id="YAG-uh-00f">
@@ -46,13 +46,28 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="j8l-a5-flM"/>
                                 </connections>
                             </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="追加…" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mdx-mo-jbr">
+                                <rect key="frame" x="10" y="74" width="355" height="43.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43.5" id="ac9-IT-h3s"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="todoItemAdded:" destination="BYZ-38-t0r" eventType="editingDidEndOnExit" id="n0K-rA-cHr"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="KoG-7h-2Gi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="8ML-Vf-bgr"/>
+                            <constraint firstItem="mdx-mo-jbr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="LKy-t6-OGv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="KoG-7h-2Gi" secondAttribute="bottom" id="MI5-dO-yMB"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KoG-7h-2Gi" secondAttribute="trailing" id="NTZ-Vf-lSg"/>
-                            <constraint firstItem="KoG-7h-2Gi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="TwT-jI-Twe"/>
+                            <constraint firstItem="mdx-mo-jbr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="buP-8z-MLX"/>
+                            <constraint firstItem="KoG-7h-2Gi" firstAttribute="top" secondItem="mdx-mo-jbr" secondAttribute="bottom" constant="10" id="lEw-we-0fi"/>
+                            <constraint firstAttribute="trailing" secondItem="mdx-mo-jbr" secondAttribute="trailing" constant="10" id="n1O-bi-fE8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -72,12 +87,13 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addTodoTextField" destination="mdx-mo-jbr" id="Exf-2U-lgp"/>
                         <outlet property="tableView" destination="KoG-7h-2Gi" id="pDj-GQ-uAp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-322" y="-151"/>
+            <point key="canvasLocation" x="-322.39999999999998" y="-151.57421289355324"/>
         </scene>
         <!--Deleted Todo View Controller-->
         <scene sceneID="gEO-aU-hdU">
