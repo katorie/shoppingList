@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -46,7 +45,7 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="j8l-a5-flM"/>
                                 </connections>
                             </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="追加…" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mdx-mo-jbr">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enterで追加" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mdx-mo-jbr">
                                 <rect key="frame" x="10" y="74" width="355" height="43.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43.5" id="ac9-IT-h3s"/>
@@ -72,19 +71,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Y5U-OD-6Nl">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="dyr-b1-VYY">
-                                <connections>
-                                    <action selector="addButtonTapped:" destination="BYZ-38-t0r" id="iih-jm-w5Q"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="完了リスト" id="sal-QX-7eL">
-                                <connections>
-                                    <action selector="deletedItemsButtonTapped:" destination="BYZ-38-t0r" id="Yba-Mi-XnX"/>
-                                    <segue destination="UTk-wr-aMn" kind="show" id="4bO-Lf-icA"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="完了リスト" id="sal-QX-7eL">
+                            <connections>
+                                <action selector="deletedItemsButtonTapped:" destination="BYZ-38-t0r" id="Yba-Mi-XnX"/>
+                                <segue destination="UTk-wr-aMn" kind="show" id="4bO-Lf-icA"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addTodoTextField" destination="mdx-mo-jbr" id="Exf-2U-lgp"/>
