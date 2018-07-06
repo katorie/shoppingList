@@ -14,7 +14,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var deletedTodoList = [TodoItem]()
     
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var addTodoTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,28 +25,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
-    @IBAction func addButtonTapped(_ sender: Any) {
-        let alertController = UIAlertController(title: "追加", message: "入力してください", preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addTextField(configurationHandler: nil)
-        
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-            if let textField = alertController.textFields?.first {
-                if let text = textField.text, !text.isEmpty {
-                    let todo = TodoItem()
-                    todo.title = text
-                    self.todoList.insert(todo, at:0)
-                    self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
-                }
-                // TODO todoListを保存する
-            }
+    
+    @IBAction func todoItemAdded(_ sender: UITextField) {
+        if let text = addTodoTextField.text, !text.isEmpty {
+            let todo = TodoItem()
+            todo.title = text
+            self.todoList.insert(todo, at: 0)
+            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
+            // TODO 保存する
         }
-        alertController.addAction(okAction)
         
-        let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertActionStyle.cancel, handler: nil)
-        alertController.addAction(cancelButton)
-        
-        present(alertController,animated: true, completion: nil)
+        addTodoTextField.text = nil
     }
     
     @IBAction func deletedItemsButtonTapped(_ sender: Any) {
