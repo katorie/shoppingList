@@ -9,9 +9,10 @@
 import Foundation
 
 class TodoItem: NSObject {
-    var title: String?
+    var title: String = ""
     var isDone: Bool = false
     var isDeleted: Bool = false
+    var documentID: String = ""
     
     override init() {
     }
