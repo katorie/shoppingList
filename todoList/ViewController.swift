@@ -36,25 +36,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.controller.todoList.insert(todo, at: 0)
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
             
-            // 保存する
-            let db = Firestore.firestore()
-            
-            var ref: DocumentReference? = nil
-            ref = db.collection("todoItems").addDocument(data: [
-                "title": todo.title,
-                "isDeleted": todo.isDeleted,
-                "isDone": todo.isDone
-            ]) { err in
-                if let err = err {
-                    print("Error adding document: \(err)")
-                } else {
-                    print("Document added with ID: \(ref!.documentID)")
-                }
-            }
-            
-            if let documentID = ref?.documentID {
-                todo.documentID = documentID
-            }
+            // 保存する（追加）
+            controller.addTodoItem(todoItem: todo)
         }
         
         addTodoTextField.text = nil
