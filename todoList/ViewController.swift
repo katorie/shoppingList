@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseFirestore
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let controller = TodoItemController()
