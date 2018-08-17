@@ -14,4 +14,12 @@ class TodoItemController {
     var todoList = [TodoItem]()
     var deletedTodoList = [TodoItem]()
     
+    init() {
+        FirebaseApp.configure()
+
+        let db = Firestore.firestore()
+        let settings = db.settings
+        settings.areTimestampsInSnapshotsEnabled = true
+        db.settings = settings
+    }
 }

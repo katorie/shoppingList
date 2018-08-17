@@ -21,9 +21,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // 読み込む
         let db = Firestore.firestore()
-        let settings = db.settings
-        settings.areTimestampsInSnapshotsEnabled = true
-        db.settings = settings
 
         db.collection("todoItems").getDocuments() { [weak self] (querySnapshot, err) in
             if let err = err {
