@@ -11,10 +11,8 @@ import Firebase
 import FirebaseFirestore
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    var todoList = [TodoItem]()
-    var deletedTodoList = [TodoItem]()
-    
+    let controller = TodoItemController()
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addTodoTextField: UITextField!
     
@@ -43,9 +41,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     todo.isDone = document.data()["isDone"] as! Bool
                     
                     if todo.isDeleted {
-                        strongSelf.deletedTodoList.append(todo)
+                        strongSelf.controller.deletedTodoList.append(todo)
                     } else {
-                        strongSelf.todoList.append(todo)
+                        strongSelf.controller.todoList.append(todo)
                     }
                 }
                 strongSelf.tableView.reloadData()
@@ -61,7 +59,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if let text = addTodoTextField.text, !text.isEmpty {
             let todo = TodoItem()
             todo.title = text
-            self.todoList.insert(todo, at: 0)
+            self.controller.todoList.insert(todo, at: 0)
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
             
             // 保存する
@@ -92,12 +90,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todoList.count
+        return controller.todoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
-        let todo = todoList[indexPath.row]
+        let todo = controller.todoList[indexPath.row]
         cell.textLabel?.text = todo.title
         
         if todo.isDone {
@@ -110,7 +108,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let todo = todoList[indexPath.row]
+        let todo = controller.todoList[indexPath.row]
         
         if todo.isDone {
             todo.isDone = false
@@ -129,10 +127,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
-            let todo = todoList[indexPath.row]
+            let todo = controller.todoList[indexPath.row]
             todo.isDeleted = true
-            deletedTodoList.insert(todo, at: 0)
-            todoList.remove(at: indexPath.row)
+            controller.deletedTodoList.insert(todo, at: 0)
+            controller.todoList.remove(at: indexPath.row)
             
             // 保存する
             let db = Firestore.firestore()
@@ -146,7 +144,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let viewController = segue.destination as! DeletedTodoViewController
-        viewController.deletedTodoList = self.deletedTodoList
+        viewController.deletedTodoList = self.controller.deletedTodoList
     }
 }
 
