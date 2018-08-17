@@ -20,31 +20,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         // 読み込む
-        let db = Firestore.firestore()
-
-        db.collection("todoItems").getDocuments() { [weak self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                for document in querySnapshot!.documents {
-                    let todo = TodoItem()
-                    todo.documentID = document.documentID
-                    todo.title = document.data()["title"] as! String
-                    todo.isDeleted = document.data()["isDeleted"] as! Bool
-                    todo.isDone = document.data()["isDone"] as! Bool
-                    
-                    if todo.isDeleted {
-                        strongSelf.controller.deletedTodoList.append(todo)
-                    } else {
-                        strongSelf.controller.todoList.append(todo)
-                    }
-                }
-                strongSelf.tableView.reloadData()
-            }
+        controller.getTodoItem { [weak self] in
+            self?.tableView.reloadData()
         }
     }
 

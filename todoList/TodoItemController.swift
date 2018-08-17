@@ -22,4 +22,33 @@ class TodoItemController {
         settings.areTimestampsInSnapshotsEnabled = true
         db.settings = settings
     }
+    
+    func getTodoItem(completion: @escaping ()->Void) {
+        let db = Firestore.firestore()
+        
+        db.collection("todoItems").getDocuments() { [weak self] (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                for document in querySnapshot!.documents {
+                    let todo = TodoItem()
+                    todo.documentID = document.documentID
+                    todo.title = document.data()["title"] as! String
+                    todo.isDeleted = document.data()["isDeleted"] as! Bool
+                    todo.isDone = document.data()["isDone"] as! Bool
+                    
+                    if todo.isDeleted {
+                        strongSelf.deletedTodoList.append(todo)
+                    } else {
+                        strongSelf.todoList.append(todo)
+                    }
+                }
+                completion()
+            }
+        }
+    }
 }
