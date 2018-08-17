@@ -66,9 +66,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             // 保存する
             let db = Firestore.firestore()
-            let settings = db.settings
-            settings.areTimestampsInSnapshotsEnabled = true
-            db.settings = settings
             
             var ref: DocumentReference? = nil
             ref = db.collection("todoItems").addDocument(data: [
@@ -123,9 +120,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // 保存する
         let db = Firestore.firestore()
-        let settings = db.settings
-        settings.areTimestampsInSnapshotsEnabled = true
-        db.settings = settings
         
         let todoItemRef = db.collection("todoItems").document(todo.documentID)
         todoItemRef.updateData(["isDone": todo.isDone])
@@ -142,9 +136,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             // 保存する
             let db = Firestore.firestore()
-            let settings = db.settings
-            settings.areTimestampsInSnapshotsEnabled = true
-            db.settings = settings
             
             let todoItemRef = db.collection("todoItems").document(todo.documentID)
             todoItemRef.updateData(["isDeleted": todo.isDeleted])
