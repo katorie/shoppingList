@@ -72,4 +72,15 @@ class TodoItemController {
             todoItem.documentID = documentID
         }
     }
+    
+    func updateTodoItem(todoItem: TodoItem, status: String) {
+        let db = Firestore.firestore()
+        let todoItemRef = db.collection("todoItems").document(todoItem.documentID)
+
+        if status == "isDone" {
+            todoItemRef.updateData([status: todoItem.isDone])
+        } else if status == "isDeleted" {
+            todoItemRef.updateData([status: todoItem.isDeleted])
+        }
+    }
 }

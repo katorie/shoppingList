@@ -73,11 +73,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             todo.isDone = true
         }
         
-        // 保存する
-        let db = Firestore.firestore()
-        
-        let todoItemRef = db.collection("todoItems").document(todo.documentID)
-        todoItemRef.updateData(["isDone": todo.isDone])
+        // 保存する（更新）
+        controller.updateTodoItem(todoItem: todo, status: "isDone")
         
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
@@ -89,11 +86,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             controller.deletedTodoList.insert(todo, at: 0)
             controller.todoList.remove(at: indexPath.row)
             
-            // 保存する
-            let db = Firestore.firestore()
-            
-            let todoItemRef = db.collection("todoItems").document(todo.documentID)
-            todoItemRef.updateData(["isDeleted": todo.isDeleted])
+            // 保存する（更新）
+            controller.updateTodoItem(todoItem: todo, status: "isDeleted")
             
             tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
