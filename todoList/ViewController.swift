@@ -72,7 +72,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         // 保存する（更新）
-        controller.updateTodoItem(todoItem: todo, status: "isDone")
+        controller.updateTodoItem(todoItem: todo)
         
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
@@ -85,7 +85,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             controller.todoList.remove(at: indexPath.row)
             
             // 保存する（更新）
-            controller.updateTodoItem(todoItem: todo, status: "isDeleted")
+            controller.updateTodoItem(todoItem: todo)
             
             tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
