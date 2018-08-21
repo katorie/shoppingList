@@ -52,6 +52,15 @@ class TodoItemController {
         }
     }
     
+    func addTodoItem(title: String) {
+        let todo = TodoItem()
+        todo.title = title
+        self.todoList.insert(todo, at: 0)
+        
+        // 保存する（追加）
+        self.addTodoItem(todoItem: todo)
+    }
+    
     func addTodoItem(todoItem: TodoItem) {
         let db = Firestore.firestore()
         
@@ -71,6 +80,30 @@ class TodoItemController {
         if let documentID = ref?.documentID {
             todoItem.documentID = documentID
         }
+    }
+    
+    func updateTodoItemIsDone(index: Int) {
+        let todo = self.todoList[index]
+        
+        if todo.isDone {
+            todo.isDone = false
+        } else {
+            todo.isDone = true
+        }
+        
+        // 保存する（更新）
+        self.updateTodoItem(todoItem: todo)
+    }
+    
+    func updateTodoItemIsDeleted(index: Int) {
+        let todo = self.todoList[index]
+        todo.isDeleted = true
+        self.deletedTodoList.insert(todo, at: 0)
+        self.todoList.remove(at: index)
+        
+        // 保存する（更新）
+        self.updateTodoItem(todoItem: todo)
+
     }
     
     func updateTodoItem(todoItem: TodoItem) {

@@ -29,15 +29,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBAction func todoItemAdded(_ sender: UITextField) {
         if let text = addTodoTextField.text, !text.isEmpty {
-            let todo = TodoItem()
-            todo.title = text
-            self.controller.todoList.insert(todo, at: 0)
+            self.controller.addTodoItem(title: text)
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
-            
-            // 保存する（追加）
-            self.controller.addTodoItem(todoItem: todo)
         }
-        
         addTodoTextField.text = nil
     }
     
@@ -63,30 +57,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let todo = self.controller.todoList[indexPath.row]
-        
-        if todo.isDone {
-            todo.isDone = false
-        } else {
-            todo.isDone = true
-        }
-        
-        // 保存する（更新）
-        self.controller.updateTodoItem(todoItem: todo)
-        
+        self.controller.updateTodoItemIsDone(index: indexPath.row)
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
-            let todo = self.controller.todoList[indexPath.row]
-            todo.isDeleted = true
-            self.controller.deletedTodoList.insert(todo, at: 0)
-            self.controller.todoList.remove(at: indexPath.row)
-            
-            // 保存する（更新）
-            self.controller.updateTodoItem(todoItem: todo)
-            
+            self.controller.updateTodoItemIsDeleted(index: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
     }
