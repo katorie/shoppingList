@@ -18,7 +18,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         // 読み込む
-        controller.getTodoItem { [weak self] in
+        self.controller.getTodoItem { [weak self] in
             self?.tableView.reloadData()
         }
     }
@@ -35,7 +35,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
             
             // 保存する（追加）
-            controller.addTodoItem(todoItem: todo)
+            self.controller.addTodoItem(todoItem: todo)
         }
         
         addTodoTextField.text = nil
@@ -45,12 +45,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return controller.todoList.count
+        return self.controller.todoList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
-        let todo = controller.todoList[indexPath.row]
+        let todo = self.controller.todoList[indexPath.row]
         cell.textLabel?.text = todo.title
         
         if todo.isDone {
@@ -63,7 +63,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let todo = controller.todoList[indexPath.row]
+        let todo = self.controller.todoList[indexPath.row]
         
         if todo.isDone {
             todo.isDone = false
@@ -72,20 +72,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         // 保存する（更新）
-        controller.updateTodoItem(todoItem: todo)
+        self.controller.updateTodoItem(todoItem: todo)
         
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
-            let todo = controller.todoList[indexPath.row]
+            let todo = self.controller.todoList[indexPath.row]
             todo.isDeleted = true
-            controller.deletedTodoList.insert(todo, at: 0)
-            controller.todoList.remove(at: indexPath.row)
+            self.controller.deletedTodoList.insert(todo, at: 0)
+            self.controller.todoList.remove(at: indexPath.row)
             
             // 保存する（更新）
-            controller.updateTodoItem(todoItem: todo)
+            self.controller.updateTodoItem(todoItem: todo)
             
             tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
