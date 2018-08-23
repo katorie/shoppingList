@@ -7,48 +7,50 @@
 //
 
 import Foundation
-import Firebase
-import FirebaseFirestore
 
 class TodoItemController {
     var todoList = [TodoItem]()
     var deletedTodoList = [TodoItem]()
     
-    init() {
-        FirebaseApp.configure()
-
-        let db = Firestore.firestore()
-        let settings = db.settings
-        settings.areTimestampsInSnapshotsEnabled = true
-        db.settings = settings
-    }
+    let dataStore = DataStore()
     
-    func getTodoItem(completion: @escaping ()->Void) {
-        let db = Firestore.firestore()
-        
-        db.collection("todoItems").getDocuments() { [weak self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-                return
-            }
-            guard let strongSelf = self else {
-                return
-            }
-            
-            for document in querySnapshot!.documents {
-                let todo = TodoItem()
-                todo.documentID = document.documentID
-                todo.title = document.data()["title"] as! String
-                todo.isDeleted = document.data()["isDeleted"] as! Bool
-                todo.isDone = document.data()["isDone"] as! Bool
-                
-                if todo.isDeleted {
-                    strongSelf.deletedTodoList.append(todo)
-                } else {
-                    strongSelf.todoList.append(todo)
+    func getTodoItem(completion: @escaping () -> Void) {
+        self.dataStore.getTodoItem { [weak self] in
+            if let documents = self?.dataStore.documents {
+                for document in documents {
+                    guard let data = document.data() else {
+                        continue
+                    }
+                    let todo = TodoItem()
+                    todo.documentID = document.documentID
+
+                    // todo.title = (data["title"] as? String) ?? ""
+                    if let title = data["title"] as? String {
+                        todo.title = title
+                    } else {
+                        todo.title = ""
+                    }
+
+                    if let isDeleted = data["isDeleted"] as? Bool {
+                        todo.isDeleted = isDeleted
+                    } else {
+                        todo.isDeleted = false
+                    }
+                    
+                    if let isDone = data["isDone"] as? Bool {
+                        todo.isDone = isDone
+                    } else {
+                        todo.isDone = false
+                    }
+                    
+                    if todo.isDeleted {
+                        self?.deletedTodoList.append(todo)
+                    } else {
+                        self?.todoList.append(todo)
+                    }
                 }
+                completion()
             }
-            completion()
         }
     }
     
@@ -58,28 +60,7 @@ class TodoItemController {
         self.todoList.insert(todo, at: 0)
         
         // 保存する（追加）
-        self.addTodoItem(todoItem: todo)
-    }
-    
-    func addTodoItem(todoItem: TodoItem) {
-        let db = Firestore.firestore()
-        
-        var ref: DocumentReference? = nil
-        ref = db.collection("todoItems").addDocument(data: [
-            "title": todoItem.title,
-            "isDeleted": todoItem.isDeleted,
-            "isDone": todoItem.isDone
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
-        
-        if let documentID = ref?.documentID {
-            todoItem.documentID = documentID
-        }
+        self.dataStore.addTodoItem(todoItem: todo)
     }
     
     func updateTodoItemIsDone(index: Int) {
@@ -92,7 +73,7 @@ class TodoItemController {
         }
         
         // 保存する（更新）
-        self.updateTodoItem(todoItem: todo)
+        self.dataStore.updateTodoItem(todoItem: todo)
     }
     
     func updateTodoItemIsDeleted(index: Int) {
@@ -102,13 +83,7 @@ class TodoItemController {
         self.todoList.remove(at: index)
         
         // 保存する（更新）
-        self.updateTodoItem(todoItem: todo)
+        self.dataStore.updateTodoItem(todoItem: todo)
 
-    }
-    
-    func updateTodoItem(todoItem: TodoItem) {
-        let db = Firestore.firestore()
-        let todoItemRef = db.collection("todoItems").document(todoItem.documentID)
-        todoItemRef.updateData(["isDone": todoItem.isDone, "isDeleted": todoItem.isDeleted])
     }
 }
