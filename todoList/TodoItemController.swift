@@ -15,7 +15,8 @@ class TodoItemController {
     let dataStore = DataStore()
     
     func getTodoItem(completion: @escaping () -> Void) {
-        self.dataStore.getTodoItem { [weak self] in
+        self.dataStore.getTodoItem { [weak self] error in
+            // TODO errorどうするか決める
             if let documents = self?.dataStore.documents {
                 for document in documents {
                     guard let data = document.data() else {

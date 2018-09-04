@@ -22,20 +22,12 @@ class DataStore {
         db.settings = settings
     }
     
-    func getTodoItem(completion: @escaping ()->Void) {
+    func getTodoItem(completion: @escaping (Error?) -> Void) {
         let db = Firestore.firestore()
         
-        db.collection("todoItems").getDocuments() { [weak self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-                return
-            }
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.documents = querySnapshot!.documents
-            completion()
+        db.collection("todoItems").getDocuments() { (querySnapshot, err) in
+            self.documents = querySnapshot!.documents
+            completion(err)
         }
     }
     
