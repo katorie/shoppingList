@@ -42,23 +42,17 @@ class DataStore {
     func addTodoItem(todoItem: TodoItem) {
         let db = Firestore.firestore()
         
-        var ref: DocumentReference? = nil
-        ref = db.collection("todoItems").addDocument(data: [
+        let ref = db.collection("todoItems").addDocument(data: [
             "title": todoItem.title,
             "isDeleted": todoItem.isDeleted,
             "isDone": todoItem.isDone
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
             }
         }
         
-        // TODO
-        if let documentID = ref?.documentID {
-            todoItem.documentID = documentID
-        }
+        todoItem.documentID = ref.documentID
     }
     
     func updateTodoItem(todoItem: TodoItem) {
